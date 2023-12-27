@@ -1,0 +1,154 @@
+
+//+------------------------------------------------------------------+
+//|                                          Atomic79 MT5 EA         |
+//|                                   Copyright © 2021 forexroboteasy.com  |
+//|                                     Developed by Forex Robot Easy Team |
+//+------------------------------------------------------------------+
+
+// Import necessary libraries
+#include <Trade\Trade.mqh>
+#include <Indicators\Trend\iTrend.mqh>
+
+// Define constants
+#define SYMBOL 'XAUUSD'             // Gold market symbol
+#define MAGIC_NUMBER 123456         // Magic number for trade identification
+#define LOT_SIZE 0.01               // Fixed lot size for trading
+
+// Define global variables
+CTrade trade;                       // Trade class object
+iTrend iTrendIndicator;              // iTrend indicator object
+
+//+------------------------------------------------------------------+
+//| Custom Entry Strategies                                          |
+//+------------------------------------------------------------------+
+
+// Strategy 1: Buy when iTrend crosses above 0
+void strategy1()
+{
+   double iTrendValue = iTrendIndicator.iTrend(NULL, 0, 14, PRICE_CLOSE, 7, 1);
+   if (iTrendValue > 0) {
+       trade.Buy(LOT_SIZE, SYMBOL, 0, 0, 0, 0, 'Strategy 1');
+   }
+}
+
+// Strategy 2: Sell when iTrend crosses below 0
+void strategy2()
+{
+   double iTrendValue = iTrendIndicator.iTrend(NULL, 0, 14, PRICE_CLOSE, 7, 1);
+   if (iTrendValue < 0) {
+       trade.Sell(LOT_SIZE, SYMBOL, 0, 0, 0, 0, 'Strategy 2');
+   }
+}
+
+// Strategy 3: Buy when iTrend is above a certain threshold
+void strategy3()
+{
+   double iTrendValue = iTrendIndicator.iTrend(NULL, 0, 14, PRICE_CLOSE, 7, 1);
+   double threshold = 0.5;
+   if (iTrendValue > threshold) {
+       trade.Buy(LOT_SIZE, SYMBOL, 0, 0, 0, 0, 'Strategy 3');
+   }
+}
+
+// Strategy 4: Sell when iTrend is below a certain threshold
+void strategy4()
+{
+   double iTrendValue = iTrendIndicator.iTrend(NULL, 0, 14, PRICE_CLOSE, 7, 1);
+   double threshold = -0.5;
+   if (iTrendValue < threshold) {
+       trade.Sell(LOT_SIZE, SYMBOL, 0, 0, 0, 0, 'Strategy 4');
+   }
+}
+
+// Strategy 5: Buy when iTrend changes direction from negative to positive
+void strategy5()
+{
+   double iTrendValue = iTrendIndicator.iTrend(NULL, 0, 14, PRICE_CLOSE, 7, 1);
+   double previTrendValue = iTrendIndicator.iTrend(NULL, 0, 14, PRICE_CLOSE, 7, 2);
+   if (previTrendValue < 0 && iTrendValue > 0) {
+       trade.Buy(LOT_SIZE, SYMBOL, 0, 0, 0, 0, 'Strategy 5');
+   }
+}
+
+//+------------------------------------------------------------------+
+//| Custom Functions                                                 |
+//+------------------------------------------------------------------+
+
+// Function to calculate and analyze market indicators
+void calculateMarketIndicators()
+{
+   // Calculate iTrend indicator
+   iTrendIndicator.Create(NULL, 0, 14, PRICE_CLOSE, 7, 1);
+}
+
+// Function to analyze market and execute entry strategies
+void analyzeMarketAndExecuteStrategies()
+{
+   // Analyze market using iTrend indicator
+   calculateMarketIndicators();
+
+   // Execute entry strategies
+   strategy1();
+   strategy2();
+   strategy3();
+   strategy4();
+   strategy5();
+}
+
+// Function to adjust strategies based on daily market analysis
+void adjustStrategiesBasedOnDailyAnalysis()
+{
+   // TODO: Implement logic to adjust strategies based on daily market analysis
+}
+
+// Function to implement investment protection using averaging techniques
+void implementInvestmentProtection()
+{
+   // TODO: Implement investment protection using averaging techniques
+}
+
+// Function to handle TURBO mode operation
+void handleTurboMode()
+{
+   // TODO: Implement logic for TURBO mode operation
+}
+
+//+------------------------------------------------------------------+
+//| Expert initialization function                                   |
+//+------------------------------------------------------------------+
+int OnInit()
+{
+   // Initialize trade class
+   trade.SetExpertMagicNumber(MAGIC_NUMBER);
+
+   // Initialize iTrend indicator
+   iTrendIndicator.Create(NULL, 0, 14, PRICE_CLOSE, 7, 1);
+
+   return(INIT_SUCCEEDED);
+}
+
+//+------------------------------------------------------------------+
+//| Expert tick function                                             |
+//+------------------------------------------------------------------+
+void OnTick()
+{
+   // Analyze market and execute strategies
+   analyzeMarketAndExecuteStrategies();
+
+   // Adjust strategies based on daily market analysis
+   adjustStrategiesBasedOnDailyAnalysis();
+
+   // Implement investment protection
+   implementInvestmentProtection();
+
+   // Handle TURBO mode operation
+   handleTurboMode();
+}
+
+//+------------------------------------------------------------------+
+//| Expert deinitialization function                                 |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason)
+{
+   // TODO: Cleanup code and perform necessary actions before deinitialization
+}
